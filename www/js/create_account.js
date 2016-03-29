@@ -128,7 +128,7 @@ function attemptCreateUserAccount(userFirstName, userLastName, userEmail, userPa
               }
             });
 
-            location.href = "sample_explore.html";
+            location.href = "explore_list.html";
         }
     });
 }
@@ -181,7 +181,7 @@ function attemptCreateBusinessAccount(businessName, businessAddress, businessEma
               description:"Eat my buffet!"
             });
 
-            location.href = "sample_explore.html";
+            location.href = "explore_list_business.html";
         }
     });
 }
