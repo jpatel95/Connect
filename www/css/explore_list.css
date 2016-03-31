@@ -75,9 +75,10 @@ h2 {
 	margin: 0;
 	position: absolute;
 	bottom: 0;
-	margin-bottom: 10px;
+	padding-bottom: 10px;
 	width: 100vw;
 	border-top: 1px solid white;
+	background-color: rgba(0, 0, 0, 0.5);	
 }
 
 #control > li {
