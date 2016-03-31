@@ -28,24 +28,27 @@ body{
     -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
     -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
     -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
-    background-color:red;
+    background-color: black;
+    background: url(../img/login_background.jpg);
+
+    background-repeat: repeat-x;
+    background-size: auto 100vh;
+    font-family: 'Raleway', sans-serif;
+
     text-align:center;
 
-    font-family: 'Droid Sans', arial, serif;
     color: white;
-    font-size:12px;
+    font-size:16px;
     height:100%;
     margin:0px;
     padding:0px;
     width:100%;
 }
 
-.login_body{
-    position: relative;
+.white{
     color: white;
-    background-color:#B30000;
-    height: 100%;
 }
+
 
 /* Portrait layout (default) */
 .app {
@@ -77,6 +80,15 @@ body{
 
 .button_container{
     position: relative;
+    margin-top:50vh;
+}
+
+#button_back{
+    border: 2px solid white;
+}
+
+#button_login{
+    border: 2px solid white;
 }
 
 .event {
