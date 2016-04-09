@@ -24,11 +24,15 @@
 
 
 
+.container-fluid{
+    background-color: rgba(0, 0, 0, .9);
+    background-image: url(../img/login_background.jpg);
+}
+
 body{
     -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
     -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
     -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
-    background: #EDEBED url(../img/login_background.jpg);
 
     background-repeat: repeat-x;
     background-size: auto 100vh;

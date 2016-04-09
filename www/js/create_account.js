@@ -52,15 +52,15 @@ var isBusiness = false;
 
 document.getElementById("button_business").onclick = function () {
     isBusiness = true;
-    document.getElementById("button_business").style.backgroundColor = "green";
-    document.getElementById("button_user").style.backgroundColor = "gray";
+    document.getElementById("button_business").style.border = "2px solid white";
+    document.getElementById("button_user").style.border = "2px solid gray";
     document.getElementById("create_account_form").innerHTML = '<form><div class="form-group row"><label for="inputName" class="col-xs-3 form-control-label">Business Name</label><div class="col-xs-9"><input type="text" class="form-control" id="inputName" placeholder="Business Name"></div></div><div class="form-group row"><label for="inputAddress" class="col-xs-12 form-control-label">Business Address</label><div class="col-xs-12"><input type="text" class="form-control" id="inputAddress" placeholder="Business Address"></div></div><div class="form-group row"><div class="col-xs-5"><input type="text" class="form-control" id="inputCity" pattern="[a-z|A-Z| ]*" placeholder="City"></div><div class="col-xs-4"><input type="text" class="form-control" id="inputState" pattern="[a-z|A-Z| ]*" placeholder="State"></div><div class="col-xs-3"><input type="text" class="form-control" id="inputZip" pattern="[0-9]{5}" placeholder="Zip"></div></div><br><div class="form-group row"><label for="inputEmail" class="col-xs-3 form-control-label">Email</label><div class="col-xs-9"><input type="email" class="form-control" id="inputEmail"  placeholder="Email"></div></div><div class="form-group row"><label for="inputPassword" class="col-xs-3 form-control-label">Password</label><div class="col-xs-9"><input type="password" class="form-control" id="inputPassword" placeholder="Password"></div></div></form>';
 };
 
 document.getElementById("button_user").onclick = function () {
     isBusiness=false;
-    document.getElementById("button_business").style.backgroundColor = "gray";
-    document.getElementById("button_user").style.backgroundColor = "green";
+    document.getElementById("button_business").style.border = "2px solid gray";
+    document.getElementById("button_user").style.border = "2px solid white";
     document.getElementById("create_account_form").innerHTML = '<form><div class="form-group row"><label for="inputFirstName" class="col-xs-2 form-control-label">First Name</label><div class="col-xs-4"><input type="text" class="form-control" id="inputFirstName" pattern="[A-Z][a-z|A-Z]*" placeholder="First Name"></div><label for="inputLastName" class="col-xs-2 form-control-label">Last Name</label><div class="col-xs-4"><input type="text" class="form-control" id="inputLastName" pattern="[A-Z][a-z|A-Z]*" placeholder="Last Name"></div></div><div class="form-group row"><label for="inputEmail" class="col-xs-3 form-control-label">Email</label><div class="col-xs-9"><input type="email" class="form-control" id="inputEmail" placeholder="Email"></div></div><div class="form-group row"><label for="inputPassword" class="col-xs-3 form-control-label">Password</label><div class="col-xs-9"><input type="password" class="form-control" id="inputPassword" placeholder="Password"></div></div></form>';
 };
 
