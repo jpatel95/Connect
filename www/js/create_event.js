@@ -48,23 +48,10 @@ var app = {
     }
 };
 
-$(document).ready(function() {
-    // $("button").click(function() {
-    //     var selected = $("#dropdown option:selected").text();
-    //     var departing = $("#departing").val();
-    //     var returning = $("#returning").val();
-    //     if (departing === "" || returning === "") {
-    //         alert("Please select departing and returning dates.");
-    //     } else {
-    //         confirm("Would you like to go to " + selected + " on " + departing + " and return on " + returning + "?");
-    //     }
-    // });
-});
-
 var category = "other";
 
 document.getElementById("button_food").onclick = function () {
-    var category = "food";
+    category = "food";
     document.getElementById("button_food").style.color="#ff9999";
     document.getElementById("button_food").style.border="2px solid #ff9999";
     document.getElementById("button_fun").style.color="white";
@@ -76,7 +63,7 @@ document.getElementById("button_food").onclick = function () {
 };
 
 document.getElementById("button_fun").onclick = function () {
-    var category = "fun";
+    category = "fun";
     document.getElementById("button_food").style.color="white";
     document.getElementById("button_food").style.border="2px solid white";
     document.getElementById("button_fun").style.color="#ccff33";
@@ -88,7 +75,7 @@ document.getElementById("button_fun").onclick = function () {
 };
 
 document.getElementById("button_health").onclick = function () {
-    var category = "health";
+    category = "health";
     document.getElementById("button_food").style.color="white";
     document.getElementById("button_food").style.border="2px solid white";
     document.getElementById("button_fun").style.color="white";
@@ -100,7 +87,7 @@ document.getElementById("button_health").onclick = function () {
 };
 
 document.getElementById("button_other").onclick = function () {
-    var category = "other";
+    category = "other";
     document.getElementById("button_food").style.color="white";
     document.getElementById("button_food").style.border="2px solid white";
     document.getElementById("button_fun").style.color="white";
@@ -113,7 +100,68 @@ document.getElementById("button_other").onclick = function () {
 
 
 document.getElementById("button_create_event").onclick = function () {
-    location.href = "create_account.html";
+    var eventName = document.getElementById('inputEventName').value;
+    var date = document.getElementById('inputDate').value;
+    var startTime = document.getElementById('inputStartTime').value;
+    var endTime = document.getElementById('inputEndTime').value;
+    var description = document.getElementById('inputDescription').value;
+    var hashtag = document.getElementById('inputHashtag').value;
+    console.log(eventName, date, startTime, endTime, description, hashtag, category);
+
+    if(eventName=="" || date=="" || startTime=="" || endTime=="" || description=="" || hashtag=="" || category==""){
+        alert("Please fill in all fields.");
+        location.href = "create_event.html";
+    }
+
+    var myUserID = window.localStorage.getItem("userUID");
+    if(myUserID==null){
+        alert("Null UserID found.");
+        location.href = "create_event.html";
+    }
+
+    var ref = new Firebase("https://connect-app.firebaseio.com/users/"+myUserID+"/");
+
+    var myBusinessName = "";
+    var myBusinessID = "";
+    var myAddress = "";
+
+    ref.on("value", function(snapshot) {
+        console.log(snapshot.val());
+        console.log("ID: "+ snapshot.val().business.yelpID);
+        console.log("address: "+snapshot.val().business.address);
+
+        myBusinessName = snapshot.val().business.name;
+        myBusinessID = snapshot.val().business.yelpID;
+        myAddress = snapshot.val().business.address;
+
+        if(snapshot.val().business.name === ""){
+            console.log("Not a Business");
+            location.href = "explore_list_business.html";
+        }
+        else{
+            console.log("A Business");
+            var eventRef = new Firebase("https://connect-app.firebaseio.com/events/");
+            eventRef.push({
+                businessName:myBusinessName,
+                address:myAddress,
+                businessID:myBusinessID,
+                userID: myUserID,
+                eventName:eventName,
+                date:date,
+                startTime:startTime,
+                endTime:endTime,
+                description:description,
+                hashtag:hashtag,
+                category:category,
+                attendees:0
+            });
+            location.href = "explore_list_business.html";
+        }
+    }, function (errorObject) {
+        console.log("The read failed: " + errorObject.code);
+        location.href = "explore_list_business.html";
+    });
+    
 };
 
 document.getElementById("button_back").onclick = function () {

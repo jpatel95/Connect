@@ -1,6 +1,5 @@
 
 $(document).ready(function() {
-
 	// listeners
 	setListeners();
 
@@ -17,6 +16,7 @@ $(document).ready(function() {
 function setListeners() {
 	$("#logout").click(function() {
 		window.location.href = "index.html";
+		window.localStorage.clear();
 	});
 }
 

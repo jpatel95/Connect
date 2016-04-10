@@ -11,11 +11,12 @@
         <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
         
         <title>Connect</title>
+
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js'></script>
+        <script src='https://cdn.firebase.com/js/client/2.1.0/firebase.js'></script>
         <!-- BootStrap Include-->
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-        <!-- jQuery library -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
         <!-- Latest compiled JavaScript -->
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
@@ -63,7 +64,7 @@
                 <input type="text" class="form-control" id="inputEventName" placeholder="Event Title">
 
                 <label>Event Logistics:</label>
-                <input class="black form-control" id="inputDate" data-date="12-02-2012" placeholder="MM-DD-YYYY" data-date-format="dd-mm-yyyy"></input>
+                <input class="black form-control" id="inputDate" data-date="12-02-2012" placeholder="MM-DD-YYYY" data-date-format="mm-dd-yyyy"></input>
                 <div class="input-group clockpicker pull-center" data-align="top" data-autoclose="true">
                     <input type="text" class="form-control" placeholder="End Time" id="inputStartTime">
                     <span class="input-group-addon">
@@ -81,7 +82,7 @@
                 <textarea class="form-control" rows="5" id="inputDescription" placeholder="Brief Description"></textarea>
  
                 <label for="inputTags">Hashtags:</label>
-                <textarea class="form-control" rows="3" id="inputDescription" placeholder="Brief Description"></textarea>
+                <textarea class="form-control" rows="3" id="inputHashtag" placeholder="Enter Some Hashtags"></textarea>
                 
             </div>          
         </form>
