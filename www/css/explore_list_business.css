@@ -3,8 +3,12 @@ html, body {
 	margin: 0;
 }
 
+.container-fluid{
+    background-color: rgba(0, 0, 0, .9);
+    background-image: url(../img/background.jpg);
+}
+
 body {
-	background-image: url(../img/background.jpg);
 	background-repeat: repeat-x;
 	background-size: auto 100vh;
 	font-family: 'Raleway', sans-serif;
