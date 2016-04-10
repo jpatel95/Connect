@@ -1,6 +1,9 @@
 
 $(document).ready(function() {
 
+	// listeners
+	setListeners();
+
 	var myFirebaseRef = new Firebase("https://connect-app.firebaseio.com/events");
 
 	myFirebaseRef.on("value", function(snapshot) {
@@ -10,6 +13,12 @@ $(document).ready(function() {
 		});
 	});
 });
+
+function setListeners() {
+	$("#logout").click(function() {
+		window.location.href = "index.html";
+	});
+}
 
 function getBusinessReviews(businessEvent) {
 
