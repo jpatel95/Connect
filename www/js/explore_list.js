@@ -1,3 +1,6 @@
+var events = [];
+var userPosition = null;
+
 
 $(document).ready(function() {
 	// listeners
@@ -45,15 +48,12 @@ function getBusinessReviews(businessEvent) {
 	    type: request_data.method,
 	    data: oauth.authorize(request_data, token),
 	}).done(function(data) {
-	    console.log(data);
 	    addEvent(data);
+	    events.push(data);
+	    console.log(events);
+
 	    $('#load').remove();
 	});
-
-	//loading
-	$('body').append('<div id="load">\
-		<img src="img/loader.gif" />\
-		</div>');
 }
 
 function addEvent(business) {
@@ -85,4 +85,34 @@ function getRating(business) {
 	}
 	htmlStr = htmlStr + " " + business.review_count + " reviews</div>";
 	return htmlStr;
+}
+
+function sortByProximity() {
+	if (navigator.geolocation) {
+		userPosition = navigator.geolocation.getCurrentPosition();
+	}
+	else {
+		console.log("no geolocation");
+		return;
+	}
+
+	// heap sort
+	// build a max heap first
+	for (var i = 1; i < events.length; i++) {
+		var parent = Math.floor((i - 1) / 2);
+
+		if (distance(events[i]) > distance(events[parent])) {
+			var tempEvent = events[parent];
+			events[parent] = events[i];
+			events[i] = tempEvent;
+		}
+	}
+
+	// we have our max heap, now lets move biggest elements to the back
+	for (var wall = events.length - 1; wall > 0; wall--) {
+		var tempEvent = events[0];
+		events[0] = events[wall];
+		events[wall] = tempEvent;
+		heapify();
+	}
 }
