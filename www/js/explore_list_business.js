@@ -1,6 +1,12 @@
+var events = [];
+var userPosition = null;
+
+Number.prototype.toRadians = function() {
+   return this * Math.PI / 180;
+}
+
 
 $(document).ready(function() {
-
 	// listeners
 	setListeners();
 
@@ -15,13 +21,15 @@ $(document).ready(function() {
 });
 
 function setListeners() {
-	$("#addEvent").click(function() {
-		window.location.href = "create_event.html";
-	});
 	$("#logout").click(function() {
 		window.localStorage.clear();
 		window.location.href = "index.html";
 	});
+	$("#addEvent").click(function() {
+		window.location.href = "create_event.html";
+		return;
+	});
+
 	$("#proximity").click(function() {
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(function(pos) {
@@ -35,7 +43,6 @@ function setListeners() {
 		}
 	});
 }
-
 
 function getBusinessReviews(businessEvent) {
 
@@ -62,15 +69,12 @@ function getBusinessReviews(businessEvent) {
 	    type: request_data.method,
 	    data: oauth.authorize(request_data, token),
 	}).done(function(data) {
-	    console.log(data);
 	    addEvent(data);
+	    events.push(data);
+	    console.log(events);
+
 	    $('#load').remove();
 	});
-
-	//loading
-	$('body').append('<div id="load">\
-		<img src="img/loader.gif" />\
-		</div>');
 }
 
 function addEvent(business) {
@@ -216,5 +220,3 @@ function sortByProximity() {
 		}
 	}
 }
-
-
