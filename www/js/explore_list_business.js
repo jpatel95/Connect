@@ -1,5 +1,6 @@
 var events = [];
 var userPosition = null;
+var currentEventID = "";
 
 Number.prototype.toRadians = function() {
    return this * Math.PI / 180;
@@ -7,14 +8,13 @@ Number.prototype.toRadians = function() {
 
 
 $(document).ready(function() {
-	// listeners
 	setListeners();
 
 	var myFirebaseRef = new Firebase("https://connect-app.firebaseio.com/events");
 
 	myFirebaseRef.on("value", function(snapshot) {
 		myKeys = Object.keys(snapshot.val())
-		console.log(myKeys);
+		//console.log(myKeys);
 		var count = 0;
 		snapshot.forEach(function(childSnapshot) {
 			var businessEvent = childSnapshot.val();
@@ -23,6 +23,7 @@ $(document).ready(function() {
 		});
 	});
 });
+
 
 function setListeners() {
 	$("#logout").click(function() {
@@ -53,6 +54,7 @@ function setListeners() {
 		return;
 	});
 
+
 	$("#recommended").click(function() {
 		document.getElementById('recommended').innerHTML = '<img  class="icon" src="icon/thumbs-up_b.png"/>';
 		document.getElementById('date').innerHTML = '<img class="icon" src="icon/calendar.png"/>';
@@ -65,6 +67,7 @@ function setListeners() {
 		document.getElementById('date').innerHTML = '<img class="icon" src="icon/calendar_b.png"/>';
 		document.getElementById('proximity').innerHTML = '<img class="icon" src="icon/compass.png"/>';
 		document.getElementById('popular').innerHTML = '<img class="icon" src="icon/fire.png"/>';
+		sortByDate();
 	});
 
 	$("#popular").click(function() {
@@ -72,6 +75,22 @@ function setListeners() {
 		document.getElementById('date').innerHTML = '<img class="icon" src="icon/calendar.png"/>';
 		document.getElementById('proximity').innerHTML = '<img class="icon" src="icon/compass.png"/>';
 		document.getElementById('popular').innerHTML = '<img class="icon" src="icon/fire_b.png"/>';
+		sortByPopularity();
+	});
+
+	$("#rsvpButton").click(function() {
+		console.log("Current event Id is: "+ currentEventID);
+		var info = 0;
+		var myRef = new Firebase('https://connect-app.firebaseio.com/events/'+currentEventID+'/');
+		myRef.on("value", function(snapshot) {
+	        //console.log(snapshot.val());
+	        info = snapshot.val().attendees + 1;
+	    }, function (errorObject) {
+	        console.log("The read failed inside explore list event click for rsvp: " + errorObject.code);
+	    });
+
+	    myRef.update({attendees: info});
+	    window.location.href = "explore_list.html";
 	});
 }
 
@@ -100,11 +119,11 @@ function getBusinessReviews(businessEvent, eventUID) {
 	    type: request_data.method,
 	    data: oauth.authorize(request_data, token),
 	}).done(function(data) {
-		myData = {d:data, b:eventUID, e:businessEvent.eventName}
-		console.log(myData);
+		myData = {d:data, b:eventUID, e:businessEvent.eventName, a:businessEvent.attendees, date:businessEvent.date}
+		//console.log(myData);
 	    addEvent(myData);
 	    events.push(myData);
-	    console.log(events);
+	    //console.log(events);
 
 	    $('#load').remove();
 	});
@@ -131,7 +150,8 @@ function addEvent(myData) {
 		var ref = new Firebase("https://connect-app.firebaseio.com/events/"+eventUID+"/");
 	    ref.on("value", function(snapshot) {
 	        info = snapshot.val();
-	        console.log(info);
+	        //console.log(info);
+	        currentEventID=eventUID
 	        document.getElementById("modal_header").innerHTML = '<h3 class="center">'+eventName+"</h3>";
 	        document.getElementById("modal_body").innerHTML = '<h4 class="center">'+info.businessName+'</h4>'+
 	        		'<h5 class="center">Date: '+info.date+'</h5>'+
@@ -166,6 +186,36 @@ function getRating(business) {
 	return htmlStr;
 }
 
+function sortByDate(){
+	console.log(events);
+	events = events.sort(function(a1, b1) {
+	    return  b1.date > a1.date;
+	});
+	console.log(events);
+	$('#events').html(""); //Removes events
+
+	for (var i = 0; i < events.length; i++) { //Adds events in order
+		addEvent(events[i]);
+		$('#load').remove();
+	}
+}
+
+function sortByPopularity(){
+	console.log(events);
+	events = events.sort(function(a1, b1) {
+	    return  parseInt(b1.a)-parseInt(a1.a);
+	});
+	console.log(events);
+	$('#events').html(""); //Removes events
+
+	for (var i = 0; i < events.length; i++) { //Adds events in order
+		addEvent(events[i]);
+		$('#load').remove();
+	}
+}
+
+
+
 function sortByProximity() {
 	if (!userPosition) {
 		console.log("no user location defined");
@@ -173,6 +223,7 @@ function sortByProximity() {
 	}
 
 	$("#events").html("");
+
 	$("body").append('<div id="load">\
             <img src="img/loader.gif" />\
         </div>');
@@ -194,8 +245,8 @@ function sortByProximity() {
 
 	// now lets redisplay the events in the correct order
 	for (var i = 0; i < events.length; i++) {
-		console.log(events[i]);
-		console.log(distance(events[i]));
+		//console.log(events[i]);
+		//console.log(distance(events[i]));
 		addEvent(events[i]);
 		$('#load').remove();
 	}
