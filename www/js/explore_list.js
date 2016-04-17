@@ -105,9 +105,9 @@ function getBusinessReviews(businessEvent, eventUID) {
 }
 
 function addEvent(myData) {
-	business = myData.d;
-	eventName = myData.e;
-	eventUID = myData.b;
+	var business = myData.d;
+	var eventName = myData.e;
+	var eventUID = myData.b;
 
 	var appendStr = '<li class="event" data-toggle="modal" data-target="#myModal" id="'+eventUID+'">\
 	<p style="font-size:1.3em;">' + eventName + '</p><br>\
@@ -119,10 +119,25 @@ function addEvent(myData) {
 	</li>';
 
 	$('#events').append(appendStr);
-	$("#"+eventUID).click(function() {
-		document.getElementById("modal_header").innerHTML = eventName;
-		document.getElementById("modal_body").innerHTML = eventName;
-	});
+
+	document.getElementById(eventUID).onclick = function(){
+		console.log(eventUID + " clicked");
+		var ref = new Firebase("https://connect-app.firebaseio.com/events/"+eventUID+"/");
+	    ref.on("value", function(snapshot) {
+	        info = snapshot.val();
+	        console.log(info);
+	        document.getElementById("modal_header").innerHTML = '<h3 class="center">'+eventName+"</h3>";
+	        document.getElementById("modal_body").innerHTML = '<h4 class="center">'+info.businessName+'</h4>'+
+	        		'<h5 class="center">Date: '+info.date+'</h5>'+
+	        		'<h5 class="center">Start: '+info.startTime+'&emsp; End: '+ info.endTime+'</h5>'+
+	        		'<h5 class="center">'+info.address+'</h5>' +
+	        		'<div class="center"><img src="' + business.image_url +'" height="100" width="100"/></div><hr>'+
+	        		'<h4 class="center">'+info.description+'</h4>';
+
+	    }, function (errorObject) {
+	        console.log("The read failed inside explore list event click " + errorObject.code);
+	    });
+	}
 }
 
 function getRating(business) {

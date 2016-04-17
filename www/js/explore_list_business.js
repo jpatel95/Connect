@@ -13,9 +13,13 @@ $(document).ready(function() {
 	var myFirebaseRef = new Firebase("https://connect-app.firebaseio.com/events");
 
 	myFirebaseRef.on("value", function(snapshot) {
+		myKeys = Object.keys(snapshot.val())
+		console.log(myKeys);
+		var count = 0;
 		snapshot.forEach(function(childSnapshot) {
 			var businessEvent = childSnapshot.val();
-			getBusinessReviews(businessEvent);
+			getBusinessReviews(businessEvent, myKeys[count]);
+			count+=1;
 		});
 	});
 });
@@ -24,10 +28,6 @@ function setListeners() {
 	$("#logout").click(function() {
 		window.localStorage.clear();
 		window.location.href = "index.html";
-	});
-	$("#addEvent").click(function() {
-		window.location.href = "create_event.html";
-		return;
 	});
 
 	$("#proximity").click(function() {
@@ -45,6 +45,12 @@ function setListeners() {
 		document.getElementById('date').innerHTML = '<img class="icon" src="icon/calendar.png"/>';
 		document.getElementById('proximity').innerHTML = '<img class="icon" src="icon/compass_b.png"/>';
 		document.getElementById('popular').innerHTML = '<img class="icon" src="icon/fire.png"/>';
+	});
+
+
+	$("#addEvent").click(function() {
+		window.location.href = "create_event.html";
+		return;
 	});
 
 	$("#recommended").click(function() {
@@ -105,9 +111,9 @@ function getBusinessReviews(businessEvent, eventUID) {
 }
 
 function addEvent(myData) {
-	business = myData.d;
-	eventName = myData.e;
-	eventUID = myData.b;
+	var business = myData.d;
+	var eventName = myData.e;
+	var eventUID = myData.b;
 
 	var appendStr = '<li class="event" data-toggle="modal" data-target="#myModal" id="'+eventUID+'">\
 	<p style="font-size:1.3em;">' + eventName + '</p><br>\
@@ -119,6 +125,25 @@ function addEvent(myData) {
 	</li>';
 
 	$('#events').append(appendStr);
+
+	document.getElementById(eventUID).onclick = function(){
+		console.log(eventUID + " clicked");
+		var ref = new Firebase("https://connect-app.firebaseio.com/events/"+eventUID+"/");
+	    ref.on("value", function(snapshot) {
+	        info = snapshot.val();
+	        console.log(info);
+	        document.getElementById("modal_header").innerHTML = '<h3 class="center">'+eventName+"</h3>";
+	        document.getElementById("modal_body").innerHTML = '<h4 class="center">'+info.businessName+'</h4>'+
+	        		'<h5 class="center">Date: '+info.date+'</h5>'+
+	        		'<h5 class="center">Start: '+info.startTime+'&emsp; End: '+ info.endTime+'</h5>'+
+	        		'<h5 class="center">'+info.address+'</h5>' +
+	        		'<div class="center"><img src="' + business.image_url +'" height="100" width="100"/></div><hr>'+
+	        		'<h4 class="center">'+info.description+'</h4>';
+
+	    }, function (errorObject) {
+	        console.log("The read failed inside explore list event click " + errorObject.code);
+	    });
+	}
 }
 
 function getRating(business) {
