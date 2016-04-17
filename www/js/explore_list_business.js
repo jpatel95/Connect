@@ -24,6 +24,9 @@ $(document).ready(function() {
 	});
 });
 
+function getReview(business){
+	return business.review.excerpt;
+}
 
 function setListeners() {
 	$("#logout").click(function() {
@@ -151,7 +154,7 @@ function addEvent(myData) {
 	    ref.on("value", function(snapshot) {
 	        info = snapshot.val();
 	        //console.log(info);
-	        currentEventID=eventUID
+	        currentEventID=eventUID;
 	        document.getElementById("modal_header").innerHTML = '<h3 class="center">'+eventName+"</h3>";
 	        document.getElementById("modal_body").innerHTML = '<h4 class="center">'+info.businessName+'</h4>'+
 	        		'<h5 class="center">Date: '+info.date+'</h5>'+
