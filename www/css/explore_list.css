@@ -144,3 +144,21 @@ h3 {
 	right: 20px;
 	margin-top: 20px;
 }
+
+#searchBar {
+	text-align: center;
+}
+
+#searchBar > input {
+	width: 90vw;
+	margin: 0 auto;
+	position: relative;
+	margin-bottom: 10px;
+	padding: 3px;
+	border-radius: 4px;
+}
+
+#label {
+	display: block;
+	color: white;
+}
